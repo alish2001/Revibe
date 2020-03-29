@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .button {
+            font-family: "Roboto";
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .whitebut {
+            background-color: rgba(0, 0, 0, 0);
+            color: white;
+            border: 2px solid #ffffff;
+        }
+
+        .whitebut:hover {
+            background-color: #ffffff;
+            color: black;
+        }
+
+
+        h1 {
+            color: white;
+            margin-top: 15%;
+            font-family: "Roboto";
+            letter-spacing: 10px;
+            font-size: 600%;
+        }
+
+        .fullscreen-bg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: -100;
+        }
+
+        .fullscreen-bg__video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: auto;
+            height: auto;
+            min-width: 100%;
+            min-height: 100%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 767px) {
+            .fullscreen-bg {
+                background: url('http://dev2.slicejack.com/fullscreen-video-demo/img/videoframe.jpg') center center / cover no-repeat;
+            }
+
+            .fullscreen-bg__video {
+                display: none;
+            }
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <center>
+        <h1>RE:VIBE</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="button whitebut">
+                <input class="button whitebut" type="file" name="song" accept=".mp3, .wav">
+                Choose file
+            </label>
+            <button class="button whitebut" type="submit">Upload</button>
+        </form>
+        <audio controls>
+            <source src="{{ uploaded_file_url }}" type="audio/mpeg">
+        </audio>
+        <br>
+        {% if uploaded_file_url %}
+        <button class="button whitebut" onclick="location.href='{{uploaded_file_url}}';">Download</button>
+        {% endif %}
+    </center>
+
+    <div class="fullscreen-bg">
+        <video id="videoBG" poster="{% static 'poster.png' %}" autoplay muted loop>
+            <source src="{% static 'video.mp4' %}" type="video/mp4">
+        </video>
+    </div>
+</body>
+</html>
